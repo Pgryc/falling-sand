@@ -69,6 +69,19 @@ const frame = {
       for (let j = this.width - 1; j >= 0; j--) {
         if (this.grainCanFallDown(i, j)) {
           this.moveGrain(i, j, i - 1, j);
+        } else if (getRandomInt(2) == 0) {
+          if (this.grainCanFallDownRight(i, j)) {
+            this.moveGrain(i, j, i - 1, j + 1);
+          } else if (this.grainCanFallDownLeft(i, j)) {
+            this.moveGrain(i, j, i - 1, j - 1);
+          }
+        } else {
+          if (this.grainCanFallDownLeft(i, j)) {
+            this.moveGrain(i, j, i - 1, j - 1);
+          } else if (this.grainCanFallDownRight(i, j)) {
+            this.moveGrain(i, j, i - 1, j + 1);
+          }
+          // check if it can fall diagonally but start opposite dir
         }
       }
     }
@@ -85,6 +98,20 @@ const frame = {
   },
   grainCanFallDown(x, y) {
     if (x > 0 && this.rows[x - 1][y] == null) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  grainCanFallDownLeft(x, y) {
+    if (x > 0 && y > 0 && this.rows[x - 1][y - 1] == null) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  grainCanFallDownRight(x, y) {
+    if (x > 0 && y < this.width - 1 && this.rows[x - 1][y + 1] == null) {
       return true;
     } else {
       return false;
