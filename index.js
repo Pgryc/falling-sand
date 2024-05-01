@@ -61,19 +61,11 @@ const frame = {
     }
   },
   async step() {
-    // for (let i = this.height - 1; i >= 0; i--) {
     for (let i = 0; i < this.height; i++) {
       for (let j = this.width - 1; j >= 0; j--) {
         if (this.grainCanFallDown(i, j)) {
           this.moveGrain(i, j, i - 1, j);
         }
-        // } else if (j > 0 && this.rows[i - 1][j - 1] == null) {
-        //   this.rows[i - 1][j - 1] = this.rows[i][j];
-        //   this.rows[i][j] = null;
-        // } else if (j < this.width - 1 && this.rows[i - 1][j + 1] == null) {
-        //   this.rows[i + 1][j + 1] = this.rows[i][j];
-        //   this.rows[i][j] = null;
-        // }
       }
     }
   },
@@ -103,50 +95,7 @@ const frame = {
 const grain = {
   color: "#0FfFff",
 };
-
-// buffer = makeArray(ARRAY_HEIGHT, ARRAY_WIDTH);
-// fillArrayCheckboard(buffer);
-// draw(buffer, ctx);
-//
-// ctx.fillStyle = "gray";
-
-// function makeArray(d1, d2) {
-//   var arr = new Array(d1),
-//     i,
-//     l;
-//   for (i = 0, l = d2; i < l; i++) {
-//     arr[i] = new Array(d1);
-//   }
-//   return arr;
-// }
-//
-// function fillArrayCheckboard(arr) {
-//   for (i = 0, l1 = arr.length; i < l1; i++) {
-//     for (j = 0, l2 = arr[i].length; j < l2; j++) {
-//       if ((i + j) % 2 == 1) {
-//         arr[i][j] = true;
-//       } else {
-//         arr[i][j] = false;
-//       }
-//     }
-//   }
-// }
-//
-// function draw(arr, ctx) {
-//   for (i = 0, l1 = arr.length; i < l1; i++) {
-//     for (j = 0, l2 = arr[i].length; j < l2; j++) {
-//       if (arr[i][j]) {
-//         ctx.fillRect(i * PIXEL_SIZE, j * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
-//       } else {
-//       }
-//     }
-//   }
-// }
-
-// console.log(ARRAY_WIDTH);
-// console.log(ARRAY_HEIGHT);
 frame.init(ARRAY_WIDTH, ARRAY_HEIGHT);
-// frame.dFillHalfCheckboard();
 console.log(frame);
 frame.step();
 console.log(frame);
