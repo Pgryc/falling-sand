@@ -6,7 +6,11 @@ const ARRAY_WIDTH = parseInt(canvas.getBoundingClientRect().width / PIXEL_SIZE);
 const ARRAY_HEIGHT = parseInt(
   canvas.getBoundingClientRect().height / PIXEL_SIZE,
 );
+const FPS_CAP = 250;
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 const row = {
   cells: Array(),
 };
@@ -106,8 +110,9 @@ document.addEventListener("DOMContentLoaded", async function () {
   while (true) {
     console.log(i++);
     frame.placeGrain(50, 50, "#0F0f0f");
+    frame.placeGrain(50, 150, "#0F0f0f");
     frame.step();
     frame.draw();
-    await sleep(20);
+    await sleep(1000 / FPS_CAP);
   }
 });
