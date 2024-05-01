@@ -90,7 +90,7 @@ const frame = {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   },
   placeGrain(x, y, color) {
-    if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+    if (x >= 0 && x < this.height && y >= 0 && y < this.width) {
       this.rows[x][y] = new Object();
       Object.assign(this.rows[x][y], grain);
       this.rows[x][y].color = color;
