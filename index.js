@@ -7,6 +7,7 @@ const FPS_CAP = 250;
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
+
 const row = {
   cells: Array(),
 };
@@ -15,9 +16,15 @@ const frame = {
   width: null,
   height: null,
   rows: Array(),
-  init(canvas) {
-    this.width = parseInt(canvas.getBoundingClientRect().width / PIXEL_SIZE);
-    this.height = parseInt(canvas.getBoundingClientRect().height / PIXEL_SIZE);
+  pixelSize: 1,
+  init(canvas, pixelSize) {
+    this.pixelSize = pixelSize;
+    this.width = parseInt(
+      canvas.getBoundingClientRect().width / this.pixelSize,
+    );
+    this.height = parseInt(
+      canvas.getBoundingClientRect().height / this.pixelSize,
+    );
     this.rows = Array(this.height);
     for (let i = 0; i < this.height; i++) {
       this.rows[i] = new Array(this.width);
@@ -30,10 +37,10 @@ const frame = {
         if (this.rows[i][j]) {
           ctx.fillStyle = this.rows[i][j].color;
           ctx.fillRect(
-            j * PIXEL_SIZE,
-            (this.height - i) * PIXEL_SIZE,
-            PIXEL_SIZE,
-            PIXEL_SIZE,
+            j * this.pixelSize,
+            (this.height - i) * this.pixelSize,
+            this.pixelSize,
+            this.pixelSize,
           );
         } else {
         }
@@ -122,7 +129,7 @@ const frame = {
 const grain = {
   color: "#0FfFff",
 };
-frame.init(canvas);
+frame.init(canvas, PIXEL_SIZE);
 console.log(frame);
 frame.step();
 console.log(frame);
