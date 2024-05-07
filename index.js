@@ -8,6 +8,8 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 const row = {
   cells: Array(),
 };
@@ -29,6 +31,9 @@ const frame = {
     for (let i = 0; i < this.height; i++) {
       this.rows[i] = new Array(this.width);
     }
+    canvas.addEventListener("mousedown", this.mouseDownHandler);
+    canvas.addEventListener("mouseup", this.mouseUpHandler);
+    canvas.frame = this;
   },
   draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -47,6 +52,15 @@ const frame = {
       }
     }
   },
+  mouseDownHandler(e) {
+    const rect = this.getBoundingClientRect();
+    const x = parseInt((e.clientX - rect.left) / this.frame.pixelSize);
+    const y = parseInt(
+      this.frame.height - (e.clientY - rect.top) / this.frame.pixelSize,
+    );
+    this.frame.placeGrain(y, x, "red");
+  },
+  mouseUpHandler() {},
   dFillCheckboard() {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -134,16 +148,15 @@ console.log(frame);
 frame.step();
 console.log(frame);
 frame.draw();
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 document.addEventListener("DOMContentLoaded", async function () {
   let i = 0;
   let colorInt = 1048576;
   while (true) {
-    console.log(i++);
+    // console.log(i++);
     frame.placeGrain(50, 50, "#0F0f0f");
     frame.placeGrain(100, 75, "#" + colorInt.toString(16));
     colorInt += 64;
-    console.log(colorInt.toString(16));
+    // console.log(colorInt.toString(16));
     frame.step();
     frame.draw();
     await sleep(1000 / FPS_CAP);
