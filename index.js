@@ -2,10 +2,6 @@ const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
 
 const PIXEL_SIZE = 3;
-const ARRAY_WIDTH = parseInt(canvas.getBoundingClientRect().width / PIXEL_SIZE);
-const ARRAY_HEIGHT = parseInt(
-  canvas.getBoundingClientRect().height / PIXEL_SIZE,
-);
 const FPS_CAP = 250;
 
 function getRandomInt(max) {
@@ -19,12 +15,12 @@ const frame = {
   width: null,
   height: null,
   rows: Array(),
-  init(width, height) {
-    this.width = width;
-    this.height = height;
-    this.rows = Array(height);
-    for (let i = 0; i < height; i++) {
-      this.rows[i] = new Array(width);
+  init(canvas) {
+    this.width = parseInt(canvas.getBoundingClientRect().width / PIXEL_SIZE);
+    this.height = parseInt(canvas.getBoundingClientRect().height / PIXEL_SIZE);
+    this.rows = Array(this.height);
+    for (let i = 0; i < this.height; i++) {
+      this.rows[i] = new Array(this.width);
     }
   },
   draw() {
@@ -126,7 +122,7 @@ const frame = {
 const grain = {
   color: "#0FfFff",
 };
-frame.init(ARRAY_WIDTH, ARRAY_HEIGHT);
+frame.init(canvas);
 console.log(frame);
 frame.step();
 console.log(frame);
@@ -134,10 +130,13 @@ frame.draw();
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 document.addEventListener("DOMContentLoaded", async function () {
   let i = 0;
+  let colorInt = 1048576;
   while (true) {
     console.log(i++);
     frame.placeGrain(50, 50, "#0F0f0f");
-    frame.placeGrain(50, 150, "#0F0f0f");
+    frame.placeGrain(100, 75, "#" + colorInt.toString(16));
+    colorInt += 64;
+    console.log(colorInt.toString(16));
     frame.step();
     frame.draw();
     await sleep(1000 / FPS_CAP);
