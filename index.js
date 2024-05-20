@@ -19,6 +19,9 @@ const frame = {
   height: null,
   rows: Array(),
   pixelSize: 1,
+  isMouseDown: false,
+  mouseX: 0,
+  mouseY: 0,
   init(canvas, pixelSize) {
     this.pixelSize = pixelSize;
     this.width = parseInt(
@@ -33,6 +36,7 @@ const frame = {
     }
     canvas.addEventListener("mousedown", this.mouseDownHandler);
     canvas.addEventListener("mouseup", this.mouseUpHandler);
+    canvas.addEventListener("mousemove", this.mouseMoveHandler);
     canvas.frame = this;
   },
   draw() {
@@ -54,13 +58,24 @@ const frame = {
   },
   mouseDownHandler(e) {
     const rect = this.getBoundingClientRect();
-    const x = parseInt((e.clientX - rect.left) / this.frame.pixelSize);
-    const y = parseInt(
-      this.frame.height - (e.clientY - rect.top) / this.frame.pixelSize,
+    let frame = e.target.frame;
+    frame.isMouseDown = true;
+    frame.mouseX = parseInt((e.clientX - rect.left) / this.frame.pixelSize);
+    frame.mouseY = parseInt(
+      frame.height - (e.clientY - rect.top) / frame.pixelSize,
     );
-    this.frame.placeGrain(y, x, "red");
   },
-  mouseUpHandler() {},
+  mouseUpHandler(e) {
+    e.target.frame.isMouseDown = false;
+  },
+  mouseMoveHandler(e) {
+    const rect = this.getBoundingClientRect();
+    let frame = e.target.frame;
+    frame.mouseX = parseInt((e.clientX - rect.left) / this.frame.pixelSize);
+    frame.mouseY = parseInt(
+      frame.height - (e.clientY - rect.top) / frame.pixelSize,
+    );
+  },
   dFillCheckboard() {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -82,6 +97,9 @@ const frame = {
     }
   },
   async step() {
+    if (this.isMouseDown) {
+      this.placeGrain(this.mouseY, this.mouseX, "red");
+    }
     for (let i = 0; i < this.height; i++) {
       for (let j = this.width - 1; j >= 0; j--) {
         if (this.grainCanFallDown(i, j)) {
